@@ -85,6 +85,7 @@
         <profile>
             <id>dev</id>
             <properties>
+                <applicationName>nacos-gateway</applicationName><!--方便bootstrap.yml和application-*.yml读取，本项目暂时没有使用该方式-->
                 <profileActive>dev</profileActive>
                 <nacosAddress>127.0.0.1:8848</nacosAddress>
                 <nacosNameSpace>a77c2420-289a-44de-8d50-cef6f8efa40f</nacosNameSpace>
@@ -96,6 +97,7 @@
         <profile>
             <id>test</id>
             <properties>
+                <applicationName>nacos-gateway</applicationName><!--方便bootstrap.yml和application-*.yml读取，本项目暂时没有使用该方式-->
                 <profileActive>test</profileActive>
                 <nacosAddress>127.0.0.1:8848</nacosAddress>
                 <nacosNameSpace>9c00d0d8-de4e-4134-8072-e371470997f6</nacosNameSpace>
@@ -104,6 +106,7 @@
         <profile>
             <id>prod</id>
             <properties>
+                <applicationName>nacos-gateway</applicationName><!--方便bootstrap.yml和application-*.yml读取，本项目暂时没有使用该方式-->
                 <profileActive>prod</profileActive>
                 <nacosAddress>127.0.0.1:8848</nacosAddress>
                 <nacosNameSpace>86748f55-bb25-4fdd-a197-ee0d914dcf91</nacosNameSpace>

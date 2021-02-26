@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: @nacosAddress@ #读取pom文件中的nacos-server的地址
+        prefix: nacos-gateway       #配置文件前缀名，一般是用spring.application.name作为前缀，这个可以写在pom文件里面作为通用配置，application-*.yml和bootstrap.yml都能读取
+        file-extension: yaml        #配置文件的文件类型
+        namespace: @nacosNameSpace@ #nacos的命名空间，用于做一个环境的区分，dev、prod、test等，此时Nacos-Server类似一个平台包含了三个环境，如果是Eureka作为注册中心就要部署三套项目。
+      discovery:
+        namespace: @nacosNameSpace@
+        server-addr: @nacosAddress@
+  profiles:
+    active: @profileActive@

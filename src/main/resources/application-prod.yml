@@ -1,0 +1,20 @@
+server:
+  port: 2021
+
+spring:
+  application:
+    name: nacos-gateway
+
+  #网关配置
+  cloud:
+    gateway:
+      routes:
+        - id: nacos-consumer-a # 服务名spring.application.name
+          uri: lb://nacos-consumer-a
+          predicates:
+            - Path=/nacos-consumer-a/**
+
+
+      discovery:
+        locator:
+          enabled: true

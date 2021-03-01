@@ -13,8 +13,10 @@ spring:
           uri: lb://nacos-consumer-a
           predicates:
             - Path=/nacos-consumer-a/**
-
-
+        - id: nacos-provider-a
+          uri: lb://nacos-provider-a
+          predicates:
+            - Path=/nacos-provider-a/**
       discovery:
         locator:
           enabled: true #表明gateway开启服务注册和发现的功能，并且spring cloud gateway自动根据服务发现为每一个服务创建了一个router，这个router将以服务名开头的请求路径转发到对应的服务。

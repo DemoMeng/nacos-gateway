@@ -17,3 +17,7 @@
 ![全局过滤器](images/gateway全局过滤器.jpg)
 - Routes配置:
 ![Routes路由配置](images/gateway路由配置.jpg)
+
+
+#SpringBoot、SpringCloud、SpringCloudAlibaba三者版本兼容参考：
+![版本兼容](images/springboot-cloud-alibaba三者对应版本.jpg)

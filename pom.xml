@@ -64,6 +64,9 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
 
+
+
+
     </dependencies>
 
     <!-- SpringCloud依赖 -->
@@ -87,8 +90,9 @@
             <properties>
                 <applicationName>nacos-gateway</applicationName><!--方便bootstrap.yml和application-*.yml读取，本项目暂时没有使用该方式-->
                 <profileActive>dev</profileActive>
-                <nacosAddress>127.0.0.1:8848</nacosAddress>
+                <nacosAddress>192.168.2.11:8848</nacosAddress>
                 <nacosNameSpace>a77c2420-289a-44de-8d50-cef6f8efa40f</nacosNameSpace>
+                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间-->
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -99,8 +103,9 @@
             <properties>
                 <applicationName>nacos-gateway</applicationName><!--方便bootstrap.yml和application-*.yml读取，本项目暂时没有使用该方式-->
                 <profileActive>test</profileActive>
-                <nacosAddress>127.0.0.1:8848</nacosAddress>
+                <nacosAddress>192.168.2.11:8848</nacosAddress>
                 <nacosNameSpace>9c00d0d8-de4e-4134-8072-e371470997f6</nacosNameSpace>
+                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间-->
             </properties>
         </profile>
         <profile>
@@ -108,8 +113,9 @@
             <properties>
                 <applicationName>nacos-gateway</applicationName><!--方便bootstrap.yml和application-*.yml读取，本项目暂时没有使用该方式-->
                 <profileActive>prod</profileActive>
-                <nacosAddress>127.0.0.1:8848</nacosAddress>
+                <nacosAddress>192.168.2.11:8848</nacosAddress>
                 <nacosNameSpace>86748f55-bb25-4fdd-a197-ee0d914dcf91</nacosNameSpace>
+                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间-->
             </properties>
         </profile>
     </profiles>
@@ -140,15 +146,51 @@
             </resource>
         </resources>
 
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.mqz.nacos.gateway.NacosGatewayApplication</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
+            <plugins>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>1.4.0</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                                <goal>push</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!--Dockerfile默认与pom平级-->
+                        <!--<contextDirectory>${project.basedir}</contextDirectory>-->
+                        <username></username>
+                        <password></password>
+                        <repository>registry.cn-hangzhou.aliyuncs.com/${aliNameSpace}/gateway-rep</repository>
+                        <dockerInfoDirectory></dockerInfoDirectory>
+                        <tag>0.0.1</tag>
+                        <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                        <buildArgs>
+                            <JAR_NAME>${project.build.finalName}</JAR_NAME>
+                        </buildArgs>
+                        <skip>false</skip>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <mainClass>com.mqz.nacos.gateway.NacosGatewayApplication</mainClass>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
     </build>
 
 </project>

@@ -33,7 +33,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RefreshScope  //动态刷新读取Nacos中的配置文件
 public class GatewayGlobalFilter implements GlobalFilter,Ordered{
 
-    @Value(value = "${about}")
+    @Value(value = "${about:默认信息啊啊啊啊啊}")
     private String about;
 
     private static List<String> needPermission;

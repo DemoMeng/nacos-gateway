@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  fxq-contract:
+    image: registry.cn-hangzhou.aliyuncs.com/nacos-project/gateway-rep:0.0.1
+    environment:
+      JAVA_AGENT_OPTS: ""
+    deploy:
+        replicas: 1
+    volumes:
+      - /Users/xiaoguotudou/logs/nacos-gateway:/home/mqz/nacos-project/
+    ports:
+      - "2021:2021"
+#    networks:
+#      - test
+    restart: on-failure
+
+
+#networks:
+#  test:
+#    external: true

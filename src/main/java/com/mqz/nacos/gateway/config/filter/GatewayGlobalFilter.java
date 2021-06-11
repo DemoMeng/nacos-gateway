@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 @RefreshScope  //动态刷新读取Nacos中的配置文件
 public class GatewayGlobalFilter implements GlobalFilter,Ordered{
+
+//    public static void main(String[] args) {
+//        BigDecimal b1 = new BigDecimal("2.2");
+//        BigDecimal b2 = new BigDecimal("25.3");
+//        BigDecimal b3 = new BigDecimal("22.2");
+//        BigDecimal bb = new BigDecimal("0").add(b1).add(b2).add(b3);
+//        System.out.println(bb);
+//    }
 
     @Value(value = "${about:默认信息啊啊啊啊啊}")
     private String about;

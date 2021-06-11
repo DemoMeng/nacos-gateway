@@ -163,10 +163,8 @@
                     <configuration>
                         <!--Dockerfile默认与pom平级-->
                         <!--<contextDirectory>${project.basedir}</contextDirectory>-->
-                        <username></username>
-                        <password></password>
+                        <!-- .docker/config.json 阿里云auth鉴权密码 -->
                         <repository>registry.cn-hangzhou.aliyuncs.com/${aliNameSpace}/gateway-rep</repository>
-                        <dockerInfoDirectory></dockerInfoDirectory>
                         <tag>0.0.1</tag>
                         <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                         <buildArgs>

@@ -24,7 +24,7 @@ COPY target/${FILE_NAME} ${FILE_NAME}
 EXPOSE 8068
 
 #健康检查
-HEALTHCHECK --start-period=60s --interval=60s --timeout=60s --retries=10 CMD curl --fail localhost:8068/actuator/health || exit 1
+HEALTHCHECK --start-period=60s --interval=60s --timeout=60s --retries=10 CMD curl --fail localhost:2021/actuator/health || exit 1
 
 #指定容器启动时要执行的命令，但如果存在CMD指令，CMD中的参数会被附加到ENTRYPOINT指令的后面
 ENTRYPOINT ["sh","-c","java ${JAVA_OPTS} -jar ${FILE_NAME}"]

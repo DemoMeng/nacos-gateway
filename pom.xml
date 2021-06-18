@@ -92,7 +92,7 @@
                 <profileActive>dev</profileActive>
                 <nacosAddress>192.168.2.11:8848</nacosAddress>
                 <nacosNameSpace>a77c2420-289a-44de-8d50-cef6f8efa40f</nacosNameSpace>
-                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间-->
+                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间，有一个环境区分dev/prod的命名空间-->
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -105,7 +105,7 @@
                 <profileActive>test</profileActive>
                 <nacosAddress>192.168.2.11:8848</nacosAddress>
                 <nacosNameSpace>9c00d0d8-de4e-4134-8072-e371470997f6</nacosNameSpace>
-                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间-->
+                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间，有一个环境区分dev/prod的命名空间-->
             </properties>
         </profile>
         <profile>
@@ -115,7 +115,7 @@
                 <profileActive>prod</profileActive>
                 <nacosAddress>192.168.2.11:8848</nacosAddress>
                 <nacosNameSpace>86748f55-bb25-4fdd-a197-ee0d914dcf91</nacosNameSpace>
-                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间-->
+                <aliNameSpace>nacos-project</aliNameSpace><!--阿里云镜像仓库命名空间，有一个环境区分dev/prod的命名空间-->
             </properties>
         </profile>
     </profiles>
@@ -163,14 +163,14 @@
                     <configuration>
                         <!--Dockerfile默认与pom平级-->
                         <!--<contextDirectory>${project.basedir}</contextDirectory>-->
-                        <!-- .docker/config.json 阿里云auth鉴权密码 -->
-                        <repository>registry.cn-hangzhou.aliyuncs.com/${aliNameSpace}/gateway-rep</repository>
-                        <tag>0.0.1</tag>
+                        <!-- .docker/config.json 阿里云auth鉴权密码，鉴权放在maven的setting.xml中，参考README.md -->
+                        <repository>registry.cn-hangzhou.aliyuncs.com/${aliNameSpace}/gateway-rep</repository><!-- 仓库名 -->
+                        <tag>0.0.1</tag><!-- 镜像版本 -->
                         <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                         <buildArgs>
-                            <JAR_NAME>${project.build.finalName}</JAR_NAME>
+                            <JAR_NAME>${project.build.finalName}</JAR_NAME><!-- 需要想Dcoekrfile传递的变量 -->
                         </buildArgs>
-                        <skip>false</skip>
+                        <skipPush>false</skipPush><!-- 是否跳过 docker push 推送本地镜像到dockerHub或者阿里云等镜像仓库-->
                     </configuration>
                 </plugin>
 

@@ -145,7 +145,6 @@
                 <targetPath>META-INF/resources</targetPath>
             </resource>
         </resources>
-
             <plugins>
                 <plugin>
                     <groupId>com.spotify</groupId>
@@ -153,9 +152,11 @@
                     <version>1.4.0</version>
                     <executions>
                         <execution>
+                            <id>tag-image</id>
                             <phase>package</phase>
                             <goals>
                                 <goal>build</goal>
+                                <goal>tag</goal>
                                 <goal>push</goal>
                             </goals>
                         </execution>
@@ -165,7 +166,7 @@
                         <!--<contextDirectory>${project.basedir}</contextDirectory>-->
                         <!-- .docker/config.json 阿里云auth鉴权密码，鉴权放在maven的setting.xml中，参考README.md -->
                         <repository>registry.cn-hangzhou.aliyuncs.com/${aliNameSpace}/gateway-rep</repository><!-- 仓库名 -->
-                        <tag>0.0.1</tag><!-- 镜像版本 -->
+                        <tag>0.0.5</tag><!-- 镜像版本 -->
                         <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                         <buildArgs>
                             <JAR_NAME>${project.build.finalName}</JAR_NAME><!-- 需要想Dcoekrfile传递的变量 -->
@@ -177,7 +178,9 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
+                    <version>2.1.0.RELEASE</version>
+                    <!--<configuration>
+                        <includeSystemScope>true</includeSystemScope>
                         <mainClass>com.mqz.nacos.gateway.NacosGatewayApplication</mainClass>
                     </configuration>
                     <executions>
@@ -186,7 +189,7 @@
                                 <goal>repackage</goal>
                             </goals>
                         </execution>
-                    </executions>
+                    </executions>-->
                 </plugin>
             </plugins>
     </build>

@@ -4,7 +4,7 @@ FROM java:8
 MAINTAINER mengqizhang
 
 
-ENV APP_NAME="nacos-gateway"
+ENV APP_NAME="nacos-gateway-0.0.1"
 #定义jar包名称 给个默认值
 ARG JAR_NAME=${APP_NAME}.jar
 #此处必须这么指定，ARG参数在最终的ENTRYPOINT执行时会出现问题

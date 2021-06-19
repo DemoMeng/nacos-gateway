@@ -24,7 +24,7 @@
 
 
 
-#dockerfile-maven-plugin 本地打包项目成镜像并推送到镜像仓库
+#dockerfile-maven-plugin 本地打包项目成镜像并推送到镜像仓库 这里需要参考maven多模块打包方式！！具体可看项目： https://github.com/DemoMeng/simple-life-better
 
     1.打包配置pom
     2.编写Dockerfile文件

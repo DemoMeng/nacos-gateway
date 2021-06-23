@@ -50,3 +50,11 @@
 
 ![img.png](images/docker打包整体配置.png)
 
+
+
+
+#本地打成镜像并且运行：
+  
+    1.编写docker-build.yml文件
+    2.执行 docker-compose -f docker-build.yml up -d
+

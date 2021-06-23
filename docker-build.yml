@@ -1,0 +1,11 @@
+version: '2'
+services:
+  nacos-gateway:
+    build:
+      context: ./
+    restart: always
+    ports:
+      - 2021:2021
+    container_name: nacos-gateway-by-docker-compose-build
+    hostname: nacos-gateway-by-docker-compose-build
+    image: nacos-gateway-by-docker-compose-build

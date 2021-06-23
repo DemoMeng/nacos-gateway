@@ -146,7 +146,8 @@
             </resource>
         </resources>
             <plugins>
-                <plugin>
+                <!-- dockerfile-maven打包上传镜像的案例参考 Http://github.com/DemoMeng/simple-life-better -->
+                <!--<plugin>
                     <groupId>com.spotify</groupId>
                     <artifactId>dockerfile-maven-plugin</artifactId>
                     <version>1.4.0</version>
@@ -161,26 +162,25 @@
                             </goals>
                         </execution>
                     </executions>
-                    <configuration>
+                    <configuration>-->
                         <!--Dockerfile默认与pom平级-->
                         <!--<contextDirectory>${project.basedir}</contextDirectory>-->
                         <!-- .docker/config.json 阿里云auth鉴权密码，鉴权放在maven的setting.xml中，参考README.md -->
-                        <repository>registry.cn-hangzhou.aliyuncs.com/${aliNameSpace}/gateway-rep</repository><!-- 仓库名 -->
-                        <tag>0.0.5</tag><!-- 镜像版本 -->
-                        <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-                        <buildArgs>
-                            <JAR_NAME>${project.build.finalName}</JAR_NAME><!-- 需要想Dcoekrfile传递的变量 -->
-                        </buildArgs>
-                        <skipPush>false</skipPush><!-- 是否跳过 docker push 推送本地镜像到dockerHub或者阿里云等镜像仓库-->
-                    </configuration>
-                </plugin>
+                        <!--<repository>registry.cn-hangzhou.aliyuncs.com/${aliNameSpace}/gateway-rep</repository>--><!-- 仓库名 -->
+                        <!--<tag>0.0.5</tag>--><!-- 镜像版本 -->
+                       <!-- <useMavenSettingsForAuth>true</useMavenSettingsForAuth>-->
+                        <!--<buildArgs>-->
+                            <!--<JAR_NAME>${project.build.finalName}</JAR_NAME>--><!-- 需要想Dcoekrfile传递的变量 -->
+                        <!--</buildArgs>-->
+                        <!--<skipPush>false</skipPush>--><!-- 是否跳过 docker push 推送本地镜像到dockerHub或者阿里云等镜像仓库-->
+                    <!--</configuration>-->
+                <!--</plugin>-->
 
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>2.1.0.RELEASE</version>
-                    <!--<configuration>
-                        <includeSystemScope>true</includeSystemScope>
+                    <configuration>
                         <mainClass>com.mqz.nacos.gateway.NacosGatewayApplication</mainClass>
                     </configuration>
                     <executions>
@@ -189,7 +189,7 @@
                                 <goal>repackage</goal>
                             </goals>
                         </execution>
-                    </executions>-->
+                    </executions>
                 </plugin>
             </plugins>
     </build>

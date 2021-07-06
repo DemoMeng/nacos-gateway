@@ -17,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <mars.base.version>0.0.1</mars.base.version>
     </properties>
     <dependencies>
 
@@ -64,7 +65,12 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
 
-
+        <!-- 公共依赖 mars-base ：  -->
+        <dependency>
+            <groupId>com.mqz.mars.base</groupId>
+            <artifactId>mars-base</artifactId>
+            <version>${mars.base.version}</version>
+        </dependency>
 
 
     </dependencies>

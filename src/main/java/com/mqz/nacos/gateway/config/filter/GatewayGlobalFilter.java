@@ -1,5 +1,6 @@
 package com.mqz.nacos.gateway.config.filter;
 
+import com.mqz.mars.base.jwt.JwtTools;
 import com.mqz.nacos.gateway.config.exception.WithoutLoginException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -34,29 +35,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RefreshScope  //动态刷新读取Nacos中的配置文件
 public class GatewayGlobalFilter implements GlobalFilter,Ordered{
 
-    public static void main(String[] args) {
-        BigDecimal b11 = new BigDecimal("2.20");
-        BigDecimal b1 = new BigDecimal("2.2");
-        BigDecimal b2 = new BigDecimal("25.3");
-        BigDecimal b3 = new BigDecimal("22.2");
-        BigDecimal bb = new BigDecimal("0").add(b1).add(b2).add(b3);
-
-        BigDecimal dd = b2.subtract(b1).subtract(b3);
-        System.out.println(dd);
-
-
-
-
-        System.out.println(bb);
-
-        System.out.println(b1.compareTo(b11));
-        System.out.println(b1.compareTo(b2));
-        System.out.println(b2.compareTo(b1));
-
-
-
-
-    }
 
     @Value(value = "${about:默认信息啊啊啊啊啊}")
     private String about;
@@ -64,8 +42,15 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
     private static List<String> needPermission;
     static{
         List<String> list = new CopyOnWriteArrayList<>();
-        list.add("/nacos-consumer-a/a/gateway");
+        //list.add("/nacos-consumer-a/a/gateway");
         needPermission = Collections.unmodifiableList(list);
+    }
+
+    private static List<String> loginPath;
+    static{
+        List<String> list = new CopyOnWriteArrayList<>();
+        list.add("/nacos-provider-a/user/account/login");
+        loginPath = Collections.unmodifiableList(list);
     }
 
 
@@ -93,6 +78,9 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
         Flux<DataBuffer> body = serverHttpRequest.getBody();
         System.out.println(body);
 
+
+
+
         //根据请求路径拦截、放行指定的请求
         String path = uri.getPath();
         if(needPermission.contains(path)){
@@ -102,12 +90,17 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
             }
         }
 
-        String tokenValue = serverHttpRequest.getQueryParams().getFirst("token");
-        if(StringUtils.isEmpty(tokenValue)){
-            throw new WithoutLoginException("请携带登录的token");
-        }
-        //模拟解析token
-        String userId = tokenValue.split("zzz")[1];
+
+
+
+
+
+//        String tokenValue = serverHttpRequest.getQueryParams().getFirst("token");
+//        if(StringUtils.isEmpty(tokenValue)){
+//            throw new WithoutLoginException("请携带登录的token");
+//        }
+//        //模拟解析token
+//        String userId = tokenValue.split("zzz")[1];
 
 
         StringBuilder query = new StringBuilder();
@@ -122,10 +115,30 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
             }
         }
         //获取config中的key、value，然后拼接到uri请求参数后面
-        // TODO urlencode?
-        query.append("GATEWAY_USER_ID");
-        query.append('=');
-        query.append(userId);
+        // TODO urlencode ?
+//        query.append("GATEWAY_USER_ID");
+//        query.append('=');
+//        query.append(userId);
+
+        if(!loginPath.contains(path)){
+            //读取传过来frontToken，并且解析该token，把信息拼接到url上
+            JwtTools.Info info = JwtTools.toJwt(headers.get("jwt").toString());
+            query.append("GATEWAY_USER_ID");
+            query.append('=');
+            query.append(info.getUserId());
+
+            query.append("&GATEWAY_USER_NAME");
+            query.append('=');
+            query.append(info.getToken());
+
+            query.append("&GATEWAY_ROLE_ID_LIST");
+            query.append('=');
+            query.append(info.getRoleIdList().toString());
+
+        }
+
+
+
 
         //把请求参数重新拼接回去，并放入request中传递到过滤链的下一个请求中去
         try {

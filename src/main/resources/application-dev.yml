@@ -4,6 +4,19 @@ server:
 spring:
   application:
     name: nacos-gateway
+  #redis配置
+  redis:
+    database: 0
+    host: 192.168.2.11
+    port: 6379
+    password: root
+    jedis:
+      pool:
+        max-active: 200
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 0
+    timeout: 10000s
 
   #网关配置
   cloud:

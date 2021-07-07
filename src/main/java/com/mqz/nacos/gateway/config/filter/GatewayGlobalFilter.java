@@ -1,7 +1,9 @@
 package com.mqz.nacos.gateway.config.filter;
 
 import com.mqz.mars.base.jwt.JwtTools;
+import com.mqz.mars.redis.service.RedisService;
 import com.mqz.nacos.gateway.config.exception.WithoutLoginException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -33,6 +35,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Component
 @RefreshScope  //动态刷新读取Nacos中的配置文件
+@Slf4j
 public class GatewayGlobalFilter implements GlobalFilter,Ordered{
 
 
@@ -122,19 +125,22 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
 
         if(!loginPath.contains(path)){
             //读取传过来frontToken，并且解析该token，把信息拼接到url上
-            JwtTools.Info info = JwtTools.toJwt(headers.get("jwt").toString());
-            query.append("GATEWAY_USER_ID");
-            query.append('=');
-            query.append(info.getUserId());
-
-            query.append("&GATEWAY_USER_NAME");
-            query.append('=');
-            query.append(info.getToken());
-
-            query.append("&GATEWAY_ROLE_ID_LIST");
-            query.append('=');
-            query.append(info.getRoleIdList().toString());
-
+            String frontToken = headers.get("jwt").get(0);
+            String jwt = (String) RedisService.get(frontToken);
+            log.info("frontToken :{}",frontToken);
+            log.info("jwt :{}",jwt);
+            if(!StringUtils.isEmpty(jwt)){
+                JwtTools.Info info = JwtTools.toJwt(jwt);
+                query.append("GATEWAY_USER_ID");
+                query.append('=');
+                query.append(info.getUserId());
+                query.append("&GATEWAY_USER_NAME");
+                query.append('=');
+                query.append(info.getToken());
+//            query.append("&GATEWAY_ROLE_ID_LIST");
+//            query.append('=');
+//            query.append(info.getRoleIdList().toString());
+            }
         }
 
 
@@ -149,6 +155,14 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
             throw new IllegalStateException("Invalid URI query: " + query.toString());
         }
 //        return chain.filter(exchange);
+    }
+
+
+    public static void main(String[] args) {
+        JwtTools.Info info = JwtTools.toJwt("eyJhbGciOiJIUzI1NiJ9.eyJST0xFX0lEX0xJU1QiOm51bGwsIlVTRVJfSUQiOiI4MiIsIlRPS0VOIjoiNTI4ZmJiYjQzMDM3NGEyNDhhZThjNzUyZjRlNmYxNjYiLCJpYXQiOjE2MjU2MjQ1NTR9.aSt3K9TMIqeDl309dblgEax0TX2DLVaHZECPPTp5Twk");
+        System.out.println(info);
+
+
     }
 
 

@@ -19,8 +19,15 @@
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
         <mars.base.version>0.0.1</mars.base.version>
         <mars.redis.version>0.0.1</mars.redis.version>
+        <mars.validation.version>0.0.1</mars.validation.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>com.mqz.mars.validation</groupId>
+            <artifactId>mars-validation</artifactId>
+            <version>0.0.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -2,13 +2,12 @@ package com.mqz.nacos.gateway.config.filter;
 
 import com.mqz.mars.base.jwt.JwtTools;
 import com.mqz.mars.redis.service.RedisService;
-import com.mqz.nacos.gateway.config.exception.WithoutLoginException;
+import com.mqz.mars.validation.exceptions.WithoutLoginException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
@@ -62,8 +60,6 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
 
         System.out.println("网关读取配置文件中的变量："+about);
 
-
-
         ServerHttpRequest serverHttpRequest = exchange.getRequest();
         URI uri = serverHttpRequest.getURI();
         System.out.println(uri.getPath());
@@ -93,11 +89,6 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
             }
         }
 
-
-
-
-
-
 //        String tokenValue = serverHttpRequest.getQueryParams().getFirst("token");
 //        if(StringUtils.isEmpty(tokenValue)){
 //            throw new WithoutLoginException("请携带登录的token");
@@ -125,21 +116,24 @@ public class GatewayGlobalFilter implements GlobalFilter,Ordered{
 
         if(!loginPath.contains(path)){
             //读取传过来frontToken，并且解析该token，把信息拼接到url上
-            String frontToken = headers.get("jwt").get(0);
-            String jwt = (String) RedisService.get(frontToken);
-            log.info("frontToken :{}",frontToken);
-            log.info("jwt :{}",jwt);
-            if(!StringUtils.isEmpty(jwt)){
-                JwtTools.Info info = JwtTools.toJwt(jwt);
-                query.append("GATEWAY_USER_ID");
-                query.append('=');
-                query.append(info.getUserId());
-                query.append("&GATEWAY_USER_NAME");
-                query.append('=');
-                query.append(info.getToken());
+            List<String> jwtList =  headers.get("jwt");
+            if(jwtList.size() != 0){
+                String frontToken = headers.get("jwt").get(0);
+                String jwt = (String) RedisService.get(frontToken);
+                log.info("frontToken :{}",frontToken);
+                log.info("jwt :{}",jwt);
+                if(!StringUtils.isEmpty(jwt)){
+                    JwtTools.Info info = JwtTools.toJwt(jwt);
+                    query.append("GATEWAY_USER_ID");
+                    query.append('=');
+                    query.append(info.getUserId());
+                    query.append("&GATEWAY_USER_NAME");
+                    query.append('=');
+                    query.append(info.getToken());
 //            query.append("&GATEWAY_ROLE_ID_LIST");
 //            query.append('=');
 //            query.append(info.getRoleIdList().toString());
+                }
             }
         }
 

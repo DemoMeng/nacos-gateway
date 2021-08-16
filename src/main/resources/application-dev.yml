@@ -1,5 +1,5 @@
 server:
-  port: 2021
+  port: 12021
 
 spring:
   application:
@@ -17,6 +17,7 @@ spring:
         max-idle: 10
         min-idle: 0
     timeout: 10000s
+
 
   #网关配置
   cloud:
@@ -41,3 +42,6 @@ jwt:
     userId: USER_ID
     token: TOKEN
     roleIdList: ROLE_ID_LIST
+
+
+

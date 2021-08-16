@@ -14,6 +14,21 @@
 
 #Gateway 路由谓词工厂：
 
+    Parh: 
+    Cookie: 
+    After:
+    Before:
+    Between:
+    Header:
+    Host:
+    Method:
+    Query:
+    RemoteAddr:
+    Weight: 
+    
+
+
+
 - 示例：
 
 spring:

@@ -2,6 +2,7 @@ package com.mqz.nacos.gateway.config.exception;
 
 import com.alibaba.fastjson.JSON;
 import com.mqz.mars.base.response.ResponseEnum;
+import com.mqz.mars.validation.exceptions.WithoutLoginException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.annotation.Order;

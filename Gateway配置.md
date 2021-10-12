@@ -19,6 +19,118 @@
 - 使用网关优点：限流、熔断、流量监控、系统鉴权、灰度发布、线上测试
 
 
+# 名词解释：
+
+- 路由（routes）：即配置中的routes，其包括：id、uri、predicates组成，如果predicates为true，这匹配该路由
+
+- 断言（predicates）：可以匹配http请求中的cookie、header、query、path等，如果匹配成功，则进入该路由
+
+- 过滤器（filter）： GatewayFilter实例，可以对请求前、后修改请求
+
+
+# 路由配置：
+
+- 方式1： yml中配置
+````
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: nacos-consumer-a # 服务名
+          uri: lb://nacos-consumer-a # 需要路由到的服务地址
+          predicates:
+            - Path=/nacos-consumer-a/** #断言匹配的路由谓词规则
+          metedata:
+            response-timeout: 200 # 响应超时时间设置，  单位：毫秒
+            connect-timeout: 200 # 连接超时时间设置，单位：毫秒 
+
+
+````
+
+- 方式2：代码中配置
+- 基本和yml配置一致
+````
+@Configuration
+public class Routes {
+    /**
+     *
+     * 代码配置网关路由
+     *
+     * @param routeLocatorBuilder
+     * @return
+     */
+    @Bean
+    public RouteLocator routeLocator1(RouteLocatorBuilder routeLocatorBuilder){
+        return routeLocatorBuilder.routes().route("route-1",r -> r.path("/nacos-consumer-a/**").uri("lb:nacos-consumer-a")).build();
+    }
+
+}
+
+````
+
+
+# 跨域配置：
+
+````
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "**" # **为允许所有域名访问，可以修改 http://mengqizhang.xyz
+            allowedMethods:
+            - GET
+````
+
+
+# 内置GlobalFilter过滤器：
+
+官方文档： https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gatewayfilter-factories
+
+
+- AddRequestHeader :添加请求头过滤器
+
+````
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: add_request_header_route
+        uri: https://example.org
+        filters:
+            - AddRequestHeader=version, 0.0.1 # 添加了一个version=0.0.1的请求头参数和值
+````
+
+- AddRequestParameter : 添加请求url参数
+
+````
+
+    filters:
+        - AddRequestHeader=version, 0.0.1 # 添加了一个version=0.0.1的请求头参数和值
+        
+````
+
+
+- StripPrefix: 截取掉多少位url
+- 比如原来请求是 http://cloud.com/user/name/getByName，经过这个StripPrefix过滤器，截取掉了域名后面的两位url（不包含 / ）为：http://cloud.com/getByName
+````
+    filters:
+        - StripPrefix=2
+````
+
+- PrefixPath： 增加域名后url的前缀，和StripPrefix相反
+- 比如原来的请求是 http://cloud.com/user/name/getByName，经过这个PrefixPath后，变成了： http://cloud.com/addPath/user/name/getByName
+````
+    filters:
+        - PrefixPath=/addPath
+````
+
+            
+
+
+
+
 
 
 #Gateway 路由谓词工厂：
